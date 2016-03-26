@@ -1,0 +1,14 @@
+*/target/*
+.idea/*
+.settings/
+classes/
+.project
+*.iml
+out/
+*/*.iml
+*/.settings
+*/.project
+*/.gitignore
+*/.classpath
+*/.project
+*/bin/*
