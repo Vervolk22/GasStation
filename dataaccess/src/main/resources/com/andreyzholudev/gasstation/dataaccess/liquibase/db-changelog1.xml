@@ -12,12 +12,215 @@
     </preConditions>
 
     <changeSet id="1" author="AndreyZholudev">
-        <createTable tableName="authority">
+        <createTable tableName="address">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="role" type="varchar(50)">
+            <column name="country" type="varchar(30)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="AndreyZholudev">
+        <createTable tableName="branch">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="startdate" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_branch_address"
+                             referencedTableName="address" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="AndreyZholudev">
+        <createTable tableName="cashier">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="startdate" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="branch_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cashier_branch"
+                             referencedTableName="branch" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="AndreyZholudev">
+        <createTable tableName="client">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bonus" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_spent" type="currency">
+                <constraints nullable="false"/>
+            </column>
+            <column name="month_spent" type="currency">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="AndreyZholudev">
+        <createTable tableName="day">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="AndreyZholudev">
+        <createTable tableName="fuel">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="AndreyZholudev">
+        <createTable tableName="everyday_price_info">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fuel_price" type="currency">
+                <constraints nullable="false"/>
+            </column>
+            <column name="day_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_evrdinfo_day"
+                             referencedTableName="day" referencedColumnNames="id" />
+            </column>
+            <column name="fuel_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_evrdinfo_fuel"
+                             referencedTableName="fuel" referencedColumnNames="id" />
+            </column>
+            <column name="branch_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_evrdinfo_branch"
+                             referencedTableName="branch" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="AndreyZholudev">
+        <createTable tableName="refueling_machine">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="number_at_station" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="branch_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_rflngmachine_branch"
+                             referencedTableName="branch" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9" author="AndreyZholudev">
+        <createTable tableName="purchase">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paid" type="currency">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="day_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_purchase_day"
+                             referencedTableName="day" referencedColumnNames="id" />
+            </column>
+            <column name="client_id" type="int">
+                <constraints nullable="true" foreignKeyName="fk_purchase_client"
+                             referencedTableName="client" referencedColumnNames="id" />
+            </column>
+            <column name="fuel_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_purchase_fuel"
+                             referencedTableName="fuel" referencedColumnNames="id" />
+            </column>
+            <column name="cashier_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_purchase_cashier"
+                             referencedTableName="cashier" referencedColumnNames="id" />
+            </column>
+            <column name="rflngmachine_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_purchase_rflngmachine"
+                             referencedTableName="refueling_machine" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="10" author="AndreyZholudev">
+        <createTable tableName="supplier">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_supplier_address"
+                             referencedTableName="address" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="AndreyZholudev">
+        <createTable tableName="supply">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paid" type="currency">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="day_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_supplier_day"
+                             referencedTableName="day" referencedColumnNames="id" />
+            </column>
+            <column name="fuel_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_supplier_fuel"
+                             referencedTableName="fuel" referencedColumnNames="id" />
+            </column>
+            <column name="branch_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_supplier_branch"
+                             referencedTableName="branch" referencedColumnNames="id" />
             </column>
         </createTable>
     </changeSet>
