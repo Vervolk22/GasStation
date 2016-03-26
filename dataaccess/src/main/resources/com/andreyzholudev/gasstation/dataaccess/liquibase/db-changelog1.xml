@@ -211,16 +211,20 @@
                 <constraints nullable="false"/>
             </column>
             <column name="day_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_supplier_day"
+                <constraints nullable="false" foreignKeyName="fk_supply_day"
                              referencedTableName="day" referencedColumnNames="id" />
             </column>
             <column name="fuel_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_supplier_fuel"
+                <constraints nullable="false" foreignKeyName="fk_supply_fuel"
                              referencedTableName="fuel" referencedColumnNames="id" />
             </column>
             <column name="branch_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_supplier_branch"
+                <constraints nullable="false" foreignKeyName="fk_supply_branch"
                              referencedTableName="branch" referencedColumnNames="id" />
+            </column>
+            <column name="supplier_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_supply_supplier"
+                             referencedTableName="supplier" referencedColumnNames="id" />
             </column>
         </createTable>
     </changeSet>
