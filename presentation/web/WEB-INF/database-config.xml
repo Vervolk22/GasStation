@@ -22,11 +22,6 @@ http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
     <bean id="mySessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="myDataSource"/>
-        <property name="mappingResources">
-            <list>
-                <value>com/andreyzholudev/gasstation/dataaccess/User.hbm.xml</value>
-            </list>
-        </property>
         <property name="packagesToScan" value="com.andreyzholudev.gasstation.dataaccess"/>
         <property name="annotatedClasses">
             <list>
@@ -38,6 +33,10 @@ http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
             </props>
         </property>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="myDataSource"/>
     </bean>
 
     <bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
