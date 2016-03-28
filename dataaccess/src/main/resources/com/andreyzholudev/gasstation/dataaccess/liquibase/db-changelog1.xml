@@ -127,24 +127,6 @@
     </changeSet>
 
     <changeSet id="8" author="AndreyZholudev">
-        <createTable tableName="refueling_machine">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="number_at_station" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="age" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="branch_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_rflngmachine_branch"
-                             referencedTableName="branch" referencedColumnNames="id" />
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="9" author="AndreyZholudev">
         <createTable tableName="purchase">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -174,14 +156,10 @@
                 <constraints nullable="false" foreignKeyName="fk_purchase_cashier"
                              referencedTableName="cashier" referencedColumnNames="id" />
             </column>
-            <column name="rflngmachine_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_purchase_rflngmachine"
-                             referencedTableName="refueling_machine" referencedColumnNames="id" />
-            </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="10" author="AndreyZholudev">
+    <changeSet id="9" author="AndreyZholudev">
         <createTable tableName="supplier">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -196,7 +174,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="11" author="AndreyZholudev">
+    <changeSet id="10" author="AndreyZholudev">
         <createTable tableName="supply">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -227,5 +205,42 @@
                              referencedTableName="supplier" referencedColumnNames="id" />
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="AndreyZholudev">
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/addresses.csv"
+                  tableName="address">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/branches.csv"
+                  tableName="branch">
+            <column name="enabled" type="boolean"/>
+            <column name="accountNonExpired" type="boolean"/>
+            <column name="credentialsNonExpired" type="boolean"/>
+            <column name="accountNonLocked" type="boolean"/>
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/cashiers.csv"
+                  tableName="cashier">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/clients.csv"
+                  tableName="client">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/days.csv"
+                  tableName="day">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/fuels.csv"
+                  tableName="fuel">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/everyday_price_info.csv"
+                  tableName="everyday_price_info">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/purchases.csv"
+                  tableName="purchase">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/suppliers.csv"
+                  tableName="supplier">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/supplies.csv"
+                  tableName="supply">
+        </loadData>
     </changeSet>
 </databaseChangeLog>
