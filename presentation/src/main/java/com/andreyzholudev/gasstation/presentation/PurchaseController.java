@@ -1,10 +1,10 @@
-package com.coherentsolutions.webauction.presentation;
+package com.andreyzholudev.gasstation.presentation;
 
-import com.coherentsolutions.webauction.databaseaccess.entities.Category;
-import com.coherentsolutions.webauction.databaseaccess.entities.Lot;
-import com.coherentsolutions.webauction.databaseaccess.services.LotService;
-import com.coherentsolutions.webauction.presentation.utilities.DataTableParametersGetter;
-import com.coherentsolutions.webauction.presentation.utilities.LotComparator;
+import com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO;
+import com.andreyzholudev.gasstation.dataaccess.entities.BaseEntity;
+import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
+import com.andreyzholudev.gasstation.presentation.utilities.DataTableParametersGetter;
+import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,49 +20,42 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/lot")
+@RequestMapping("/purchase")
 public class PurchaseController {
-    private static LotService lotService;
-
-    public LotService getLotService() {
-        return lotService;
-    }
-
-    public void setLotService(LotService lotService) {
-        this.lotService = lotService;
-    }
+    private static PurchaseDAO purchaseDAO = new PurchaseDAO();
 
     @RequestMapping(value="/addlot")
     public String addLot() {
         return "addlot";
     }
 
-    @RequestMapping(value = "/lots", method = RequestMethod.GET)
+    @RequestMapping(value = "/purchases", method = RequestMethod.GET)
     public void lots(HttpServletRequest request, HttpServletResponse response) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        Category cat = new Category();
-        cat.setId(1);
-        List<Lot> list = lotService.read(cat);
+        List<BaseEntity> list = purchaseDAO.read();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
-        Collections.sort(list, new LotComparator(getter.getSortingColumnsNumber(),
+        Collections.sort(list, new PurchaseComparator(getter.getSortingColumnsNumber(),
                 getter.getSortingColumns(), getter.getDirections()));
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         int start = getter.getStartNum();
         int toDisplay = getter.getNumRecordsToDisplay();
         int end = (start + toDisplay) < list.size() ? start + toDisplay : list.size();
         for(int i = start; i < end; i++) {
-            Lot lot = list.get(i);
+            PurchaseEntity purchase = (PurchaseEntity)list.get(i);
             arrayBuilder.add(Json.createArrayBuilder()
-                    .add(lot.getId())
-                    .add(lot.getName())
-                    .add(lot.getStarttime().toString())
-                    .add(lot.getEndtime().toString())
-                    .add(lot.getCurrentbid())
-                    .add(lot.getBids()));
+                    .add(purchase.getId())
+                    .add(purchase.getAmount())
+                    .add(purchase.getPaid())
+                    .add(purchase.getTime().toString())
+                    .add(purchase.getCashierId())
+                    .add(purchase.getClientId() == null ? "unknown" :
+                            purchase.getClientId().toString())
+                    .add(purchase.getDayId())
+                    .add(purchase.getFuelId()));
         }
         builder.add("aaData", arrayBuilder);
         builder.add("sEcho", getter.getEchoParameter());
-        builder.add("iTotalRecords", lotService.readCount());
+        builder.add("iTotalRecords", purchaseDAO.readCount());
         builder.add("iDisplayStart", start);
         builder.add("iDisplayRecords", toDisplay);
         builder.add("iTotalDisplayRecords", list.size());
