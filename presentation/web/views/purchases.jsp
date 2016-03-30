@@ -10,7 +10,7 @@
         $(document).ready(function () {
             $("#companies").dataTable({
                 "bServerSide": true,
-                "sAjaxSource": "/lot/lots",
+                "sAjaxSource": "/purchase/purchases",
                 "bProcessing": true,
                 "bFilter": false,
                 "sPaginationType": "full_numbers",
@@ -25,11 +25,13 @@
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th>Current bid</th>
-                <th>Total bids</th>
+                <th>Amount</th>
+                <th>Paid</th>
+                <th>Fuel</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Cashier</th>
+                <th>Client</th>
             </tr>
             </thead>
             <tbody>

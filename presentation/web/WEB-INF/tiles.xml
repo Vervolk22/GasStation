@@ -16,7 +16,7 @@
     </definition>
 
     <definition name="index" extends="genericlayout">
-        <put-attribute name="body" value="/views/index.jsp" />
+        <put-attribute name="body" value="/views/purchases.jsp" />
     </definition>
     <definition name="addlot" extends="genericlayout">
         <put-attribute name="body" value="/views/addlot.jsp" />
