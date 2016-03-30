@@ -148,6 +148,11 @@ form {
     cursor: pointer;
 }
 
+#companies_wrapper {
+    margin: 15px;
+    position: absolute;
+}
+
 .inputdiv span {
     width: 100px;
     margin: 0 30px 0 15px;
