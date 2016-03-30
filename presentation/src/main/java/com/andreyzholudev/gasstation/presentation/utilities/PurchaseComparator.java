@@ -27,13 +27,13 @@ public class PurchaseComparator extends BaseComparator implements Comparator<Bas
             case 3:
                 return purchase.getTime();
             case 4:
-                return purchase.getCashierId();
+                return purchase.getCashier().toString();
             case 5:
-                return purchase.getClientId();
+                return purchase.getClient().toString();
             case 6:
-                return purchase.getDayId();
+                return purchase.getDay().toString();
             case 7:
-                return purchase.getFuelId();
+                return purchase.getFuel().toString();
         }
         return null;
     }
