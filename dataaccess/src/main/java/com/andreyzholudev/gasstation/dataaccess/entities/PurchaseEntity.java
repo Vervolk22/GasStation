@@ -8,7 +8,7 @@ import java.sql.Time;
  */
 @Entity
 @Table(name = "purchase", schema = "gasstationdb", catalog = "")
-public class PurchaseEntity {
+public class PurchaseEntity extends BaseEntity {
     private int id;
     private int amount;
     private int paid;

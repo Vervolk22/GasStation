@@ -8,7 +8,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "branch", schema = "gasstationdb", catalog = "")
-public class BranchEntity {
+public class BranchEntity extends BaseEntity {
     private int id;
     private Date startdate;
     private int addressId;

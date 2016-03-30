@@ -8,7 +8,7 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "day", schema = "gasstationdb", catalog = "")
-public class DayEntity {
+public class DayEntity extends BaseEntity {
     private int id;
     private Date date;
 
