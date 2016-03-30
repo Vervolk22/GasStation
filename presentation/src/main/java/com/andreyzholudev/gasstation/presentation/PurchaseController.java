@@ -24,13 +24,14 @@ import java.util.List;
 public class PurchaseController {
     private static PurchaseDAO purchaseDAO = new PurchaseDAO();
 
-    @RequestMapping(value="/addlot")
+    @RequestMapping(value = "/addlot")
     public String addLot() {
         return "addlot";
     }
 
     @RequestMapping(value = "/purchases", method = RequestMethod.GET)
     public void lots(HttpServletRequest request, HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
         JsonObjectBuilder builder = Json.createObjectBuilder();
         List<BaseEntity> list = purchaseDAO.read();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
@@ -40,18 +41,21 @@ public class PurchaseController {
         int start = getter.getStartNum();
         int toDisplay = getter.getNumRecordsToDisplay();
         int end = (start + toDisplay) < list.size() ? start + toDisplay : list.size();
-        for(int i = start; i < end; i++) {
-            PurchaseEntity purchase = (PurchaseEntity)list.get(i);
+        for (int i = start; i < end; i++) {
+            PurchaseEntity purchase = (PurchaseEntity) list.get(i);
+            String s = purchase.getClient() == null ? "null" : purchase.getClient().toString();
             arrayBuilder.add(Json.createArrayBuilder()
                     .add(purchase.getId())
                     .add(purchase.getAmount())
                     .add(purchase.getPaid())
+                    .add(purchase.getFuel().toString())
+                    .add(purchase.getDay().toString())
                     .add(purchase.getTime().toString())
-                    .add(purchase.getCashierId())
-                    .add(purchase.getClientId() == null ? "unknown" :
-                            purchase.getClientId().toString())
-                    .add(purchase.getDayId())
-                    .add(purchase.getFuelId()));
+                    .add(purchase.getCashier() == null ? "unknown" :
+                            purchase.getCashier().toString())
+                    .add(purchase.getClient() == null ? "unknown" :
+                            purchase.getClient().toString())
+            );
         }
         builder.add("aaData", arrayBuilder);
         builder.add("sEcho", getter.getEchoParameter());
@@ -60,9 +64,10 @@ public class PurchaseController {
         builder.add("iDisplayRecords", toDisplay);
         builder.add("iTotalDisplayRecords", list.size());
         response.setContentType("application/Json");
+
         try {
             response.getWriter().write(builder.build().toString());
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
