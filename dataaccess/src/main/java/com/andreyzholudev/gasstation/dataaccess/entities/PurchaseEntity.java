@@ -13,10 +13,10 @@ public class PurchaseEntity extends BaseEntity {
     private int amount;
     private int paid;
     private Time time;
-    private int dayId;
-    private Integer clientId;
-    private int fuelId;
-    private int cashierId;
+    private DayEntity day;
+    private ClientEntity client;
+    private FuelEntity fuel;
+    private CashierEntity cashier;
 
     @Id
     @Column(name = "id")
@@ -58,44 +58,44 @@ public class PurchaseEntity extends BaseEntity {
         this.time = time;
     }
 
-    @Basic
-    @Column(name = "day_id")
-    public int getDayId() {
-        return dayId;
+    @ManyToOne
+    @JoinColumn(name = "day_id")
+    public DayEntity getDay() {
+        return day;
     }
 
-    public void setDayId(int dayId) {
-        this.dayId = dayId;
+    public void setDay(DayEntity day) {
+        this.day = day;
     }
 
-    @Basic
-    @Column(name = "client_id")
-    public Integer getClientId() {
-        return clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    public ClientEntity getClient() {
+        return client;
     }
 
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
+    public void setClient(ClientEntity client) {
+        this.client = client;
     }
 
-    @Basic
-    @Column(name = "fuel_id")
-    public int getFuelId() {
-        return fuelId;
+    @ManyToOne
+    @JoinColumn(name = "fuel_id")
+    public FuelEntity getFuel() {
+        return fuel;
     }
 
-    public void setFuelId(int fuelId) {
-        this.fuelId = fuelId;
+    public void setFuel(FuelEntity fuel) {
+        this.fuel = fuel;
     }
 
-    @Basic
-    @Column(name = "cashier_id")
-    public int getCashierId() {
-        return cashierId;
+    @ManyToOne
+    @JoinColumn(name = "cashier_id")
+    public CashierEntity getCashier() {
+        return cashier;
     }
 
-    public void setCashierId(int cashierId) {
-        this.cashierId = cashierId;
+    public void setCashier(CashierEntity cashier) {
+        this.cashier = cashier;
     }
 
     @Override
@@ -108,11 +108,11 @@ public class PurchaseEntity extends BaseEntity {
         if (id != that.id) return false;
         if (amount != that.amount) return false;
         if (paid != that.paid) return false;
-        if (dayId != that.dayId) return false;
-        if (fuelId != that.fuelId) return false;
-        if (cashierId != that.cashierId) return false;
+        if (day != that.day) return false;
+        if (fuel != that.fuel) return false;
+        if (cashier != that.cashier) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
+        if (client != null ? !client.equals(that.client) : that.client != null) return false;
 
         return true;
     }
@@ -123,10 +123,10 @@ public class PurchaseEntity extends BaseEntity {
         result = 31 * result + amount;
         result = 31 * result + paid;
         result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + dayId;
-        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
-        result = 31 * result + fuelId;
-        result = 31 * result + cashierId;
+        result = 31 * result + (day != null ? time.hashCode() : 0);
+        result = 31 * result + (client != null ? client.hashCode() : 0);
+        result = 31 * result + (fuel != null ? time.hashCode() : 0);
+        result = 31 * result + (cashier != null ? time.hashCode() : 0);
         return result;
     }
 }

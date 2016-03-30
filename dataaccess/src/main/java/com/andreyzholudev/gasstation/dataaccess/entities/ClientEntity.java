@@ -89,4 +89,9 @@ public class ClientEntity extends BaseEntity {
         result = 31 * result + monthSpent;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

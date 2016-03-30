@@ -77,4 +77,9 @@ public class CashierEntity extends BaseEntity {
         result = 31 * result + branchId;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
