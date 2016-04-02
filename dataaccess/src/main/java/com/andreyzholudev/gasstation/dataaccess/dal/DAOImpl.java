@@ -1,10 +1,8 @@
 package com.andreyzholudev.gasstation.dataaccess.dal;
 
 import com.andreyzholudev.gasstation.dataaccess.entities.BaseEntity;
-import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +21,25 @@ public class DAOImpl implements DAO {
     public BaseEntity read(int id) {
         try(Session session = factory.openSession()) {
             return (BaseEntity) session.get(getEntityClass(), id);
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<BaseEntity> read(int start, int count, int orderBy, int orderType) {
+        try(Session session = factory.openSession()) {
+            Criteria criteria = session.createCriteria(getEntityClass());
+            criteria.setFirstResult(start);
+            criteria.setMaxResults(count);
+            switch(orderType) {
+                case 0:
+                    criteria.addOrder(Order.asc(getFieldNameToOrder(orderBy)));
+                    break;
+                case 1:
+                    criteria.addOrder(Order.desc(getFieldNameToOrder(orderBy)));
+                    break;
+            }
+            return criteria.list();
         }
     }
 
@@ -80,7 +97,17 @@ public class DAOImpl implements DAO {
 
     protected Class<BaseEntity> getEntityClass() {
         throw new RuntimeException("Method DAOImpl.getEntityClass was not " +
-                "overriden in on of the child classes.");
+                "overriden in one of the child classes.");
+    }
+
+    protected String getFieldNameToOrder(int orderBy) {
+        throw new RuntimeException("Method DAOImpl.getFieldNameToOrder " +
+        "was not overriden in one of the child classes.");
+    }
+
+    protected String getTypeNameForOrder() {
+        throw new RuntimeException("Method DAOImpl.getFieldNameToOrder " +
+                "was not overriden in one of the child classes.");
     }
 
     protected SessionFactory getSessionFactory() {

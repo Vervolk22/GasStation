@@ -11,6 +11,7 @@ import java.util.List;
 public interface DAO {
     void setSessionFactory(SessionFactory factory);
     BaseEntity read(int id);
+    List<BaseEntity> read(int start, int count, int orderBy, int orderType);
     List<BaseEntity> read();
     int readCount();
     void create(BaseEntity entity);

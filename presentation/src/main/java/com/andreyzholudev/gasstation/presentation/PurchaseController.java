@@ -33,8 +33,13 @@ public class PurchaseController {
     public void lots(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        List<BaseEntity> list = purchaseDAO.read();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
+        List<BaseEntity> list = purchaseDAO.read();
+        /*List<BaseEntity> list = purchaseDAO.read(
+                getter.getStartNum(),
+                getter.getNumRecordsToDisplay(),
+                getter.getSortingColumns()[0],
+                getter.getDirections()[0]);*/
         Collections.sort(list, new PurchaseComparator(getter.getSortingColumnsNumber(),
                 getter.getSortingColumns(), getter.getDirections()));
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
