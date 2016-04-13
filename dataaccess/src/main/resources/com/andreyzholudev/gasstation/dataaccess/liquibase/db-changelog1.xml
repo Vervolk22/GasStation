@@ -38,7 +38,7 @@
             </column>
             <column name="address_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_branch_address"
-                             referencedTableName="address" referencedColumnNames="id" />
+                             referencedTableName="address" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
@@ -56,7 +56,7 @@
             </column>
             <column name="branch_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_cashier_branch"
-                             referencedTableName="branch" referencedColumnNames="id" />
+                             referencedTableName="branch" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
@@ -113,15 +113,15 @@
             </column>
             <column name="day_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_evrdinfo_day"
-                             referencedTableName="day" referencedColumnNames="id" />
+                             referencedTableName="day" referencedColumnNames="id"/>
             </column>
             <column name="fuel_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_evrdinfo_fuel"
-                             referencedTableName="fuel" referencedColumnNames="id" />
+                             referencedTableName="fuel" referencedColumnNames="id"/>
             </column>
             <column name="branch_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_evrdinfo_branch"
-                             referencedTableName="branch" referencedColumnNames="id" />
+                             referencedTableName="branch" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
@@ -142,19 +142,19 @@
             </column>
             <column name="day_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_purchase_day"
-                             referencedTableName="day" referencedColumnNames="id" />
+                             referencedTableName="day" referencedColumnNames="id"/>
             </column>
             <column name="client_id" type="int">
                 <constraints nullable="true" foreignKeyName="fk_purchase_client"
-                             referencedTableName="client" referencedColumnNames="id" />
+                             referencedTableName="client" referencedColumnNames="id"/>
             </column>
             <column name="fuel_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_purchase_fuel"
-                             referencedTableName="fuel" referencedColumnNames="id" />
+                             referencedTableName="fuel" referencedColumnNames="id"/>
             </column>
             <column name="cashier_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_purchase_cashier"
-                             referencedTableName="cashier" referencedColumnNames="id" />
+                             referencedTableName="cashier" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
@@ -169,7 +169,7 @@
             </column>
             <column name="address_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_supplier_address"
-                             referencedTableName="address" referencedColumnNames="id" />
+                             referencedTableName="address" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
@@ -190,24 +190,108 @@
             </column>
             <column name="day_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_supply_day"
-                             referencedTableName="day" referencedColumnNames="id" />
+                             referencedTableName="day" referencedColumnNames="id"/>
             </column>
             <column name="fuel_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_supply_fuel"
-                             referencedTableName="fuel" referencedColumnNames="id" />
+                             referencedTableName="fuel" referencedColumnNames="id"/>
             </column>
             <column name="branch_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_supply_branch"
-                             referencedTableName="branch" referencedColumnNames="id" />
+                             referencedTableName="branch" referencedColumnNames="id"/>
             </column>
             <column name="supplier_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_supply_supplier"
-                             referencedTableName="supplier" referencedColumnNames="id" />
+                             referencedTableName="supplier" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="11" author="AndreyZholudev">
+        <createTable tableName="authority">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="12" author="AndreyZholudev">
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accountNonExpired" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credentialsNonExpired" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accountNonLocked" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="13" author="AndreyZholudev">
+        <createTable tableName="user_authority">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_userauth_user"
+                             referencedTableName="user"
+                             referencedColumnNames="id"
+                        />
+            </column>
+            <column name="authority_id" type="int">
+                <constraints nullable="false"
+                             foreignKeyName="fk_userauth_authority"
+                             referencedTableName="authority"
+                             referencedColumnNames="id"
+                        />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14" author="AndreyZholudev">
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/authorities.csv"
+                  tableName="authority">
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/credentials.csv"
+                  tableName="user">
+            <column name="enabled" type="boolean"/>
+            <column name="accountNonExpired" type="boolean"/>
+            <column name="credentialsNonExpired" type="boolean"/>
+            <column name="accountNonLocked" type="boolean"/>
+        </loadData>
+        <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/credentials_authorities.csv"
+                  tableName="user_authority">
+        </loadData>
+    </changeSet>
+
+    <changeSet id="15" author="AndreyZholudev">
+        <addColumn tableName="cashier">
+            <column name="credential_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_cashier_credential"
+                             referencedTableName="user" referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="16" author="AndreyZholudev">
         <loadData file="com/andreyzholudev/gasstation/dataaccess/liquibase/addresses.csv"
                   tableName="address">
         </loadData>
