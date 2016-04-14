@@ -8,14 +8,13 @@ import java.util.List;
 /**
  * Created by Andrei on 28.03.2016.
  */
-public interface DAO {
+public interface DAO<E extends BaseEntity> {
     void setSessionFactory(SessionFactory factory);
-    BaseEntity read(int id);
-    List<BaseEntity> read(int start, int count, int orderBy, int orderType);
-    List<BaseEntity> read();
+    E read(int id);
+    List<E> read();
     int readCount();
-    void create(BaseEntity entity);
-    void update(BaseEntity entity);
-    void delete(BaseEntity entity);
+    void create(E entity);
+    void update(E entity);
+    void delete(E entity);
     void delete(int id);
 }

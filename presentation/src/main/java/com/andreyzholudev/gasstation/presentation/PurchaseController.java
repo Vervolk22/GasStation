@@ -1,8 +1,9 @@
 package com.andreyzholudev.gasstation.presentation;
 
 import com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO;
-import com.andreyzholudev.gasstation.dataaccess.entities.BaseEntity;
+import com.andreyzholudev.gasstation.dataaccess.dal.UserDAO;
 import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
+import com.andreyzholudev.gasstation.dataaccess.entities.UserEntity;
 import com.andreyzholudev.gasstation.presentation.utilities.DataTableParametersGetter;
 import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequestMapping("/purchase")
 public class PurchaseController {
     private static PurchaseDAO purchaseDAO = new PurchaseDAO();
+    private static UserDAO userDAO = new UserDAO();
 
     @RequestMapping(value = "/addlot")
     public String addLot() {
@@ -31,15 +33,13 @@ public class PurchaseController {
 
     @RequestMapping(value = "/purchases", method = RequestMethod.GET)
     public void lots(HttpServletRequest request, HttpServletResponse response) {
+        UserEntity user = userDAO.read(3);
+
+
         response.setCharacterEncoding("UTF-8");
         JsonObjectBuilder builder = Json.createObjectBuilder();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
-        List<BaseEntity> list = purchaseDAO.read();
-        /*List<BaseEntity> list = purchaseDAO.read(
-                getter.getStartNum(),
-                getter.getNumRecordsToDisplay(),
-                getter.getSortingColumns()[0],
-                getter.getDirections()[0]);*/
+        List<PurchaseEntity> list = purchaseDAO.read();
         Collections.sort(list, new PurchaseComparator(getter.getSortingColumnsNumber(),
                 getter.getSortingColumns(), getter.getDirections()));
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();

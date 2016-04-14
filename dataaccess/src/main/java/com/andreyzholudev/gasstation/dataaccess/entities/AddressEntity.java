@@ -8,20 +8,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "address", schema = "gasstationdb", catalog = "")
 public class AddressEntity extends BaseEntity {
-    private int id;
     private String country;
     private String city;
     private String location;
-
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "country")

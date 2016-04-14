@@ -40,6 +40,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
                 <value>com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity</value>
                 <value>com.andreyzholudev.gasstation.dataaccess.entities.SupplierEntity</value>
                 <value>com.andreyzholudev.gasstation.dataaccess.entities.SupplyEntity</value>
+                <value>com.andreyzholudev.gasstation.dataaccess.entities.UserEntity</value>
+                <value>com.andreyzholudev.gasstation.dataaccess.entities.AuthorityEntity</value>
+                <value>com.andreyzholudev.gasstation.dataaccess.entities.UserAuthorityEntity</value>
             </list>
         </property>
     </bean>

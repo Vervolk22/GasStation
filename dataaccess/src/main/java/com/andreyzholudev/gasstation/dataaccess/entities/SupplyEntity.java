@@ -9,7 +9,6 @@ import java.sql.Time;
 @Entity
 @Table(name = "supply", schema = "gasstationdb", catalog = "")
 public class SupplyEntity extends BaseEntity {
-    private int id;
     private int amount;
     private int paid;
     private Time time;
@@ -17,16 +16,6 @@ public class SupplyEntity extends BaseEntity {
     private int fuelId;
     private int branchId;
     private int supplierId;
-
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "amount")

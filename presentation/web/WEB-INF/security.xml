@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                 http://www.springframework.org/schema/security
+                 http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <http disable-url-rewriting="false" use-expressions="true">
+        <intercept-url pattern="/main/*" access="permitAll"/>
+        <intercept-url pattern="/user/*" access="permitAll"/>
+        <intercept-url pattern="/lot/lot*" access="permitAll"/>
+        <intercept-url pattern="/lot/*" access="hasAnyRole('ROLE_CASHIER','ROLE_ADMIN')"/>
+        <form-login
+                login-page="/user/login"
+                authentication-failure-url="/user/login?error=true&amp;normallogin=true"
+                login-processing-url="/user/j_spring_security_check"
+        />
+        <logout logout-url="/j_spring_security_logout" logout-success-url="/main/index"/>
+        <csrf/>
+        <anonymous username="guest" granted-authority="ROLE_ANONYMOUS"/>
+        <remember-me/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userService">
+
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>

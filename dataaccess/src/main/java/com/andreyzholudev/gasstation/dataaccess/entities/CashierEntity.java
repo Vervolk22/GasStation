@@ -9,20 +9,9 @@ import java.sql.Date;
 @Entity
 @Table(name = "cashier", schema = "gasstationdb", catalog = "")
 public class CashierEntity extends BaseEntity {
-    private int id;
     private String name;
     private Date startdate;
     private int branchId;
-
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "name")

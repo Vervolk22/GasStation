@@ -8,21 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "everyday_price_info", schema = "gasstationdb", catalog = "")
 public class EverydayPriceInfoEntity extends BaseEntity {
-    private int id;
     private int fuelPrice;
     private int dayId;
     private int fuelId;
     private int branchId;
-
-    @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "fuel_price")
