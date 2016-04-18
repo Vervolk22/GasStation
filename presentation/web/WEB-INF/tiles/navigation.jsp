@@ -9,6 +9,6 @@
 <div id="navigation">
     <ul>
     <li><a href="/main/index">To home page</a></li>
-    <li><a href="/lot/addlot">Add lot (restricted)</a></li>
+    <li><a href="/purchase/addpurchase">Add lot (restricted)</a></li>
     </ul>
 </div>

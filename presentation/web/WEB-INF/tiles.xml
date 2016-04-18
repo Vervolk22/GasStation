@@ -18,8 +18,8 @@
     <definition name="index" extends="genericlayout">
         <put-attribute name="body" value="/views/purchases.jsp" />
     </definition>
-    <definition name="addlot" extends="genericlayout">
-        <put-attribute name="body" value="/views/addlot.jsp" />
+    <definition name="addpurchase" extends="genericlayout">
+        <put-attribute name="body" value="/views/addpurchase.jsp" />
     </definition>
     <definition name="login" extends="genericlayout">
         <put-attribute name="body" value="/views/login.jsp" />

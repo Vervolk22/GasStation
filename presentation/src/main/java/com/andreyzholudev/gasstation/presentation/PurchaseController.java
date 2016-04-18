@@ -3,9 +3,12 @@ package com.andreyzholudev.gasstation.presentation;
 import com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO;
 import com.andreyzholudev.gasstation.dataaccess.dal.UserDAO;
 import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
+import com.andreyzholudev.gasstation.dataaccess.entities.SimpleUserEntity;
 import com.andreyzholudev.gasstation.dataaccess.entities.UserEntity;
 import com.andreyzholudev.gasstation.presentation.utilities.DataTableParametersGetter;
 import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,13 +29,41 @@ public class PurchaseController {
     private static PurchaseDAO purchaseDAO = new PurchaseDAO();
     private static UserDAO userDAO = new UserDAO();
 
-    @RequestMapping(value = "/addlot")
-    public String addLot() {
-        return "addlot";
+    @RequestMapping(value = "/addpurchase", method = RequestMethod.GET)
+    public String addPurchase(HttpServletRequest request, HttpServletResponse response) {
+        PurchaseEntity purchaseEntity = new PurchaseEntity();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        SimpleUserEntity simpleUser = userDAO.readByUsername(auth.getName());
+        purchaseEntity.setCashier(user.get);
+        /*purchaseEntity.set
+        lotEntity.setCashier(u);
+        CategoryEntity cat = new CategoryEntity();
+        lotEntity.setCategory(cat);
+        lotEntity.setUserForLot(user);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 7);
+        lotEntity.setStarttime(new Date());
+        lotEntity.setEndtime(calendar.getTime());
+        request.setAttribute("lotEntity", purchaseEntity);*/
+        //request.setAttribute("categories", categoryService.readAllAsMap());
+        return "addpurchase";
     }
 
+    /*@RequestMapping(value = "/addlot", method = RequestMethod.POST)
+    public String addPurchase(HttpServletRequest request, HttpServletResponse response,
+                         @Valid LotEntity lotEntity, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            request.setAttribute("lotEntity", lotEntity);
+            request.setAttribute("categories", categoryService.readAllAsMap());
+            return "addlot";
+        } else {
+            lotService.create(lotEntity);
+            return "index";
+        }
+    }*/
+
     @RequestMapping(value = "/purchases", method = RequestMethod.GET)
-    public void lots(HttpServletRequest request, HttpServletResponse response) {
+    public void purchases(HttpServletRequest request, HttpServletResponse response) {
         UserEntity user = userDAO.read(3);
 
 

@@ -2,6 +2,7 @@ package com.andreyzholudev.gasstation.dataaccess.dal;
 
 import com.andreyzholudev.gasstation.dataaccess.entities.AuthorityEntity;
 import com.andreyzholudev.gasstation.dataaccess.entities.UserEntity;
+import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,12 @@ public class UserDAO extends DAOImpl<UserEntity> implements UserDetailsService {
         return (BaseEntity)(getCurrentSession().createCriteria(UserEntity.class).
                 add(Restrictions.eq("username", username)).uniqueResult());
     }*/
+
+    public UserEntity readByUsername(String username) {
+        Session session = getCurrentSession();
+        return (UserEntity)getCurrentSession().createCriteria(UserEntity.class).
+                add(Restrictions.eq("username", username)).uniqueResult();
+    }
 
     @Override
     @Transactional

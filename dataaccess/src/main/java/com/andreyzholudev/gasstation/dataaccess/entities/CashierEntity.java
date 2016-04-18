@@ -11,7 +11,8 @@ import java.sql.Date;
 public class CashierEntity extends BaseEntity {
     private String name;
     private Date startdate;
-    private int branchId;
+    private BranchEntity branch;
+    private SimpleUserEntity simpleUser;
 
     @Basic
     @Column(name = "name")
@@ -33,14 +34,24 @@ public class CashierEntity extends BaseEntity {
         this.startdate = startdate;
     }
 
-    @Basic
-    @Column(name = "branch_id")
-    public int getBranchId() {
-        return branchId;
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    public BranchEntity getBranch() {
+        return branch;
     }
 
-    public void setBranchId(int branchId) {
-        this.branchId = branchId;
+    public void setBranch(BranchEntity branch) {
+        this.branch = branch;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "credential_id")
+    public SimpleUserEntity getSimpleUser() {
+        return simpleUser;
+    }
+
+    public void setSimpleUser(SimpleUserEntity simpleUser) {
+        this.simpleUser = simpleUser;
     }
 
     @Override
@@ -51,7 +62,7 @@ public class CashierEntity extends BaseEntity {
         CashierEntity that = (CashierEntity) o;
 
         if (id != that.id) return false;
-        if (branchId != that.branchId) return false;
+        if (branch != null ? !branch.equals(that.branch) : that.branch != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (startdate != null ? !startdate.equals(that.startdate) : that.startdate != null) return false;
 
@@ -63,7 +74,7 @@ public class CashierEntity extends BaseEntity {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (startdate != null ? startdate.hashCode() : 0);
-        result = 31 * result + branchId;
+        result = 31 * result + branch.hashCode();
         return result;
     }
 
