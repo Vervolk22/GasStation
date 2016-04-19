@@ -7,16 +7,17 @@
 }
 
 a {
-    color: #333;
+    color: #33F;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
     text-decoration: underline;
+    cursor: hand;
 }
 
 a:link, a:visited,
 a:active, a:hover {
-    color: #333;
+    color: #33F;
 }
 
 a:hover {
@@ -82,12 +83,25 @@ h5 a:link, h5 a:visited, h5 a:active {
 
 /* main layout
 ----------------------------------------------------------*/
+#lots_wrapper {
+    margin-right: 0;
+    height: 85%;
+}
+
+.dataTables_scroll {
+    height: 85%;
+}
+
+.dataTables_scrollBody {
+    height: 90%;
+}
+
 aside, #maincontent {
     min-height: 79%;
+    position: relative;
 }
 
 #maincontent {
-    position: relative;
     background-color: #efeeef;
     margin: 15px 15px 0 225px;
 }
@@ -114,10 +128,9 @@ footer {
 
 aside {
     background-color: #dfdedf;
-    display: block;
-    float: left;
     width: 200px;
     margin: 0 0 0 15px;
+    float: left;
 }
 
 #reglogin {
@@ -131,11 +144,12 @@ form {
     margin-bottom: 0;
 }
 
-.main-content {
-    background: url("../Images/accent.png") no-repeat;
-    padding-left: 10px;
-    padding-top: 30px;
-    max-width: 1170px;
+td.details-control {
+    background: url('/resources/img/Roll_down.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('/resources/img/Roll_up.png') no-repeat center center;
 }
 
 #linkbutton {
@@ -148,9 +162,18 @@ form {
     cursor: pointer;
 }
 
-#companies_wrapper {
-    margin: 15px;
+#lots_wrapper {
+    margin: 30px;
     position: absolute;
+}
+
+#categoryDiv {
+    display: block;
+    margin-left: 30px;
+}
+
+#categorySelect {
+    margin-left: 10px;
 }
 
 .inputdiv span {
@@ -164,6 +187,14 @@ form {
     color: red;
 }
 
+.error {
+    color: red; font-weight: bold;
+}
+
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 5px 5px; white-space: nowrap; overflow: hidden; font-size:22px}
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: bold; color: #3399FF; }
 
 /* menu
 ----------------------------------------------------------*/
@@ -246,14 +277,22 @@ label {
     font-weight: 600;
 }
 
-input, textarea {
+input, textarea, select {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
+    width: 400px;
+}
+
+#categoryDiv > span {
+    font-size: 1.2em;
+}
+
+label > select {
+    width: 70px;
 }
 
 textarea {
