@@ -3,6 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="userService" class="com.andreyzholudev.gasstation.dataaccess.dal.UserDAO"/>
-    <bean id="purchaseService" class="com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO"/>
+    <bean id="userService" class="com.andreyzholudev.gasstation.dataaccess.dal.UserDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="purchaseService" class="com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="simpleUserService" class="com.andreyzholudev.gasstation.dataaccess.dal.SimpleUserDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="daoimpl" class="com.andreyzholudev.gasstation.dataaccess.dal.DAOImpl">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
 </beans>

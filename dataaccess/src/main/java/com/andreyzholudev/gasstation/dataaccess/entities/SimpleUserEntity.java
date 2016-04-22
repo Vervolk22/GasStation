@@ -34,7 +34,7 @@ public class SimpleUserEntity extends BaseEntity {
         return true;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "simpleUser")
     public CashierEntity getCashier() {
         return cashier;
     }

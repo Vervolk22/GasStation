@@ -1,6 +1,7 @@
 package com.andreyzholudev.gasstation.presentation;
 
 import com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO;
+import com.andreyzholudev.gasstation.dataaccess.dal.SimpleUserDAO;
 import com.andreyzholudev.gasstation.dataaccess.dal.UserDAO;
 import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
 import com.andreyzholudev.gasstation.dataaccess.entities.SimpleUserEntity;
@@ -28,13 +29,14 @@ import java.util.List;
 public class PurchaseController {
     private static PurchaseDAO purchaseDAO = new PurchaseDAO();
     private static UserDAO userDAO = new UserDAO();
+    private static SimpleUserDAO simpleUserDAO = new SimpleUserDAO();
 
     @RequestMapping(value = "/addpurchase", method = RequestMethod.GET)
     public String addPurchase(HttpServletRequest request, HttpServletResponse response) {
         PurchaseEntity purchaseEntity = new PurchaseEntity();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        SimpleUserEntity simpleUser = userDAO.readByUsername(auth.getName());
-        purchaseEntity.setCashier(user.get);
+        SimpleUserEntity simpleUser = simpleUserDAO.readByUsername(auth.getName());
+        purchaseEntity.setCashier(simpleUser.getCashier());
         /*purchaseEntity.set
         lotEntity.setCashier(u);
         CategoryEntity cat = new CategoryEntity();

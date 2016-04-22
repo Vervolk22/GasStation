@@ -83,9 +83,6 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
                 "overriden in one of the child classes.");
     }
 
-    protected SessionFactory getSessionFactory() {
-        return factory;
-    }
     @Autowired
     public void setSessionFactory(SessionFactory factory) {
         this.factory = factory;
