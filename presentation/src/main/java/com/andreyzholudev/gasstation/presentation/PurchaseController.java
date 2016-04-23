@@ -1,11 +1,7 @@
 package com.andreyzholudev.gasstation.presentation;
 
-import com.andreyzholudev.gasstation.dataaccess.dal.PurchaseDAO;
-import com.andreyzholudev.gasstation.dataaccess.dal.SimpleUserDAO;
-import com.andreyzholudev.gasstation.dataaccess.dal.UserDAO;
-import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
-import com.andreyzholudev.gasstation.dataaccess.entities.SimpleUserEntity;
-import com.andreyzholudev.gasstation.dataaccess.entities.UserEntity;
+import com.andreyzholudev.gasstation.dataaccess.dal.*;
+import com.andreyzholudev.gasstation.dataaccess.entities.*;
 import com.andreyzholudev.gasstation.presentation.utilities.DataTableParametersGetter;
 import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
 import org.springframework.security.core.Authentication;
@@ -13,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -20,6 +17,7 @@ import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +28,8 @@ public class PurchaseController {
     private static PurchaseDAO purchaseDAO = new PurchaseDAO();
     private static UserDAO userDAO = new UserDAO();
     private static SimpleUserDAO simpleUserDAO = new SimpleUserDAO();
+    private static ClientDAO clientDAO = new ClientDAO();
+    private static FuelDAO fuelDAO = new FuelDAO();
 
     @RequestMapping(value = "/addpurchase", method = RequestMethod.GET)
     public String addPurchase(HttpServletRequest request, HttpServletResponse response) {
@@ -37,6 +37,9 @@ public class PurchaseController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         SimpleUserEntity simpleUser = simpleUserDAO.readByUsername(auth.getName());
         purchaseEntity.setCashier(simpleUser.getCashier());
+        purchaseEntity.setClient(new ClientEntity());
+        purchaseEntity.setFuel(new FuelEntity());
+
         /*purchaseEntity.set
         lotEntity.setCashier(u);
         CategoryEntity cat = new CategoryEntity();
@@ -48,6 +51,9 @@ public class PurchaseController {
         lotEntity.setEndtime(calendar.getTime());
         request.setAttribute("lotEntity", purchaseEntity);*/
         //request.setAttribute("categories", categoryService.readAllAsMap());
+        request.setAttribute("purchaseEntity", purchaseEntity);
+        request.setAttribute("clients", clientDAO.read());
+        request.setAttribute("fuels", fuelDAO.read());
         return "addpurchase";
     }
 
@@ -108,5 +114,19 @@ public class PurchaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/clients", method = RequestMethod.GET)
+    public @ResponseBody List<Tag> clients(HttpServletRequest request, HttpServletResponse response) {
+        List<ClientEntity> list = clientDAO.read();
+        List<Tag> data = new ArrayList<Tag>(    );
+        String tagName = request.getParameter("tagName");
+        for(ClientEntity ce : list) {
+            if (ce.getName().contains(tagName)) {
+                data.add(new Tag(ce.getId(), ce.getName()));
+            }
+        }
+
+        return data;
     }
 }

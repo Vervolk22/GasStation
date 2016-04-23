@@ -1,7 +1,6 @@
 package com.andreyzholudev.gasstation.dataaccess.dal;
 
 import com.andreyzholudev.gasstation.dataaccess.entities.BaseEntity;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +28,12 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
     @Transactional
     public List<E> read() {
         try(Session session = factory.openSession()) {
-            //return session.createCriteria(getEntityClass()).list();
-            Query query = session.createQuery("from PurchaseEntity");
+            return session.createCriteria(getEntityClass()).list();
+            //Query query = session.createQuery("from PurchaseEntity");
 
-            List<E> list = query.list();
-            return list;
+            //List<E> list = query.list();
+            //
+            // return list;
         }
     }
 

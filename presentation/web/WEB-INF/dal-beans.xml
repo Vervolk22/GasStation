@@ -12,6 +12,12 @@
     <bean id="simpleUserService" class="com.andreyzholudev.gasstation.dataaccess.dal.SimpleUserDAO">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>
+    <bean id="clientService" class="com.andreyzholudev.gasstation.dataaccess.dal.ClientDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="fuelService" class="com.andreyzholudev.gasstation.dataaccess.dal.FuelDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
     <bean id="daoimpl" class="com.andreyzholudev.gasstation.dataaccess.dal.DAOImpl">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>
