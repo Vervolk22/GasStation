@@ -49,7 +49,8 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
     @Transactional
     public void create(E entity) {
         try(Session session = factory.openSession()) {
-            session.save(entity);
+            session.persist(entity);
+            session.flush();
         }
     }
 
@@ -58,6 +59,7 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
     public void update(E entity) {
         try(Session session = factory.openSession()) {
             session.update(entity);
+            session.flush();
         }
     }
 
@@ -67,6 +69,7 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
         try(Session session = factory.openSession()) {
             E entity = (E) session.get(getEntityClass(), id);
             session.delete(entity);
+            session.flush();
         }
     }
 
@@ -75,6 +78,7 @@ public class DAOImpl<E extends BaseEntity> implements DAO<E> {
     public void delete(E entity) {
         try(Session session = factory.openSession()) {
             session.delete(entity);
+            session.flush();
         }
     }
 

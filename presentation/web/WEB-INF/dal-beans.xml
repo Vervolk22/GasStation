@@ -18,6 +18,15 @@
     <bean id="fuelService" class="com.andreyzholudev.gasstation.dataaccess.dal.FuelDAO">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>
+    <bean id="cashierService" class="com.andreyzholudev.gasstation.dataaccess.dal.CashierDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="dayService" class="com.andreyzholudev.gasstation.dataaccess.dal.DayDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
+    <bean id="everyDayPriceInfoService" class="com.andreyzholudev.gasstation.dataaccess.dal.EveryDayPriceInfoDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
     <bean id="daoimpl" class="com.andreyzholudev.gasstation.dataaccess.dal.DAOImpl">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>

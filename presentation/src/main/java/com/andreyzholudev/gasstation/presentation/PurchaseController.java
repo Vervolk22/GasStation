@@ -17,9 +17,7 @@ import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -30,6 +28,10 @@ public class PurchaseController {
     private static SimpleUserDAO simpleUserDAO = new SimpleUserDAO();
     private static ClientDAO clientDAO = new ClientDAO();
     private static FuelDAO fuelDAO = new FuelDAO();
+    private static CashierDAO cashierDAO = new CashierDAO();
+    private static DayDAO dayDAO = new DayDAO();
+    private static BranchDAO branchDAO = new BranchDAO();
+    private static EveryDayPriceInfoDAO everyDayPriceInfoDAO = new EveryDayPriceInfoDAO();
 
     @RequestMapping(value = "/addpurchase", method = RequestMethod.GET)
     public String addPurchase(HttpServletRequest request, HttpServletResponse response) {
@@ -39,6 +41,8 @@ public class PurchaseController {
         purchaseEntity.setCashier(simpleUser.getCashier());
         purchaseEntity.setClient(new ClientEntity());
         purchaseEntity.setFuel(new FuelEntity());
+        getDateAndPrice();
+
 
         /*purchaseEntity.set
         lotEntity.setCashier(u);
@@ -72,8 +76,7 @@ public class PurchaseController {
 
     @RequestMapping(value = "/purchases", method = RequestMethod.GET)
     public void purchases(HttpServletRequest request, HttpServletResponse response) {
-        UserEntity user = userDAO.read(3);
-
+        //UserEntity user = userDAO.read(3);
 
         response.setCharacterEncoding("UTF-8");
         JsonObjectBuilder builder = Json.createObjectBuilder();
@@ -128,5 +131,46 @@ public class PurchaseController {
         }
 
         return data;
+    }
+
+    private Map<FuelEntity, Integer> getDateAndPrice() {
+        DayEntity dayEntity = new DayEntity();
+        dayEntity.setDate(new java.sql.Date(new java.util.Date().getTime()));
+        DayEntity dayEntity2 = dayDAO.readByString(dayEntity.getDate());
+        if (!dayEntity.getDate().toString().equals(dayEntity2.getDate().toString())) {
+            dayEntity.setId(dayEntity2.getId() + 1);
+            dayDAO.create(dayEntity);
+            dayEntity2 = dayEntity;
+            generatePrices(dayEntity2);
+        }
+        return readPrices(dayEntity2);
+    }
+
+    private Map<FuelEntity, Integer> readPrices(DayEntity dayEntity) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        SimpleUserEntity simpleUser = simpleUserDAO.readByUsername(auth.getName());
+        BranchEntity branchEntity = simpleUser.getCashier().getBranch();
+        List<EverydayPriceInfoEntity> prices = everyDayPriceInfoDAO.read(dayEntity, branchEntity);
+        Map<FuelEntity, Integer> pricesMap = new HashMap<>(prices.size());
+        for(int i = 0; i < prices.size(); i++) {
+            pricesMap.put(prices.get(i).getFuelEntity(), prices.get(i).getFuelPrice());
+        }
+        return null;
+    }
+
+    private void generatePrices(DayEntity dayEntity) {
+        List<BranchEntity> brances = branchDAO.read();
+        List<FuelEntity> fuels = fuelDAO.read();
+        Random random = new Random();
+        for(int i = 0; i < fuels.size(); i++) {
+            for(int j = 0; j < brances.size(); j++) {
+                EverydayPriceInfoEntity price = new EverydayPriceInfoEntity();
+                price.setBranchEntity(brances.get(j));
+                price.setFuelEntity(fuels.get(i));
+                price.setDayEntity(dayEntity);
+                price.setFuelPrice(random.nextInt(5000) + 8000);
+                everyDayPriceInfoDAO.create(price);
+            }
+        }
     }
 }

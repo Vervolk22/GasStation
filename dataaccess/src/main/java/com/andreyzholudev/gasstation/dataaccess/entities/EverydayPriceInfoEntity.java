@@ -9,9 +9,9 @@ import javax.persistence.*;
 @Table(name = "everyday_price_info", schema = "gasstationdb", catalog = "")
 public class EverydayPriceInfoEntity extends BaseEntity {
     private int fuelPrice;
-    private int dayId;
-    private int fuelId;
-    private int branchId;
+    private DayEntity dayEntity;
+    private FuelEntity fuelEntity;
+    private BranchEntity branchEntity;
 
     @Basic
     @Column(name = "fuel_price")
@@ -23,34 +23,34 @@ public class EverydayPriceInfoEntity extends BaseEntity {
         this.fuelPrice = fuelPrice;
     }
 
-    @Basic
-    @Column(name = "day_id")
-    public int getDayId() {
-        return dayId;
+    @ManyToOne
+    @JoinColumn(name = "day_id")
+    public DayEntity getDayEntity() {
+        return dayEntity;
     }
 
-    public void setDayId(int dayId) {
-        this.dayId = dayId;
+    public void setDayEntity(DayEntity dayEntity) {
+        this.dayEntity = dayEntity;
     }
 
-    @Basic
-    @Column(name = "fuel_id")
-    public int getFuelId() {
-        return fuelId;
+    @ManyToOne
+    @JoinColumn(name = "fuel_id")
+    public FuelEntity getFuelEntity() {
+        return fuelEntity;
     }
 
-    public void setFuelId(int fuelId) {
-        this.fuelId = fuelId;
+    public void setFuelEntity(FuelEntity fuelEntity) {
+        this.fuelEntity = fuelEntity;
     }
 
-    @Basic
-    @Column(name = "branch_id")
-    public int getBranchId() {
-        return branchId;
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    public BranchEntity getBranchEntity() {
+        return branchEntity;
     }
 
-    public void setBranchId(int branchId) {
-        this.branchId = branchId;
+    public void setBranchEntity(BranchEntity branchEntity) {
+        this.branchEntity = branchEntity;
     }
 
     @Override
@@ -62,9 +62,9 @@ public class EverydayPriceInfoEntity extends BaseEntity {
 
         if (id != that.id) return false;
         if (fuelPrice != that.fuelPrice) return false;
-        if (dayId != that.dayId) return false;
-        if (fuelId != that.fuelId) return false;
-        if (branchId != that.branchId) return false;
+        if (dayEntity.getId() != that.dayEntity.getId()) return false;
+        if (fuelEntity.getId() != that.fuelEntity.getId()) return false;
+        if (branchEntity.getId() != that.branchEntity.getId()) return false;
 
         return true;
     }
@@ -73,9 +73,9 @@ public class EverydayPriceInfoEntity extends BaseEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + fuelPrice;
-        result = 31 * result + dayId;
-        result = 31 * result + fuelId;
-        result = 31 * result + branchId;
+        result = 31 * result + dayEntity.getId();
+        result = 31 * result + fuelEntity.getId();
+        result = 31 * result + branchEntity.getId();
         return result;
     }
 }
