@@ -12,4 +12,12 @@ $(document).ready(function () {
             };
         }
     });
+    $('#fuelInput').on('change', function () {
+        var num = this.val();
+        var priceInput = $('#priceSelect');
+        priceInput.val(num);
+        var payInput = $('#paid');
+        var amountInput = $('#amount');
+        payInput.val(priceInput.val() * amountInput.val());
+    });
 });

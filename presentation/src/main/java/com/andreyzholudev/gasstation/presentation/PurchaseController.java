@@ -41,7 +41,9 @@ public class PurchaseController {
         purchaseEntity.setCashier(simpleUser.getCashier());
         purchaseEntity.setClient(new ClientEntity());
         purchaseEntity.setFuel(new FuelEntity());
-        getDateAndPrice();
+        Map<FuelEntity, Integer> map = getDateAndPrice();
+        request.setAttribute("fuelPrices", map);
+
 
 
         /*purchaseEntity.set
@@ -155,7 +157,7 @@ public class PurchaseController {
         for(int i = 0; i < prices.size(); i++) {
             pricesMap.put(prices.get(i).getFuelEntity(), prices.get(i).getFuelPrice());
         }
-        return null;
+        return pricesMap;
     }
 
     private void generatePrices(DayEntity dayEntity) {
