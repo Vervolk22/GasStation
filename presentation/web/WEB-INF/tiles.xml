@@ -24,4 +24,13 @@
     <definition name="login" extends="genericlayout">
         <put-attribute name="body" value="/views/login.jsp" />
     </definition>
+    <definition name="addcashier" extends="genericlayout">
+        <put-attribute name="body" value="/views/addCashier.jsp" />
+    </definition>
+    <definition name="cashiers" extends="genericlayout">
+        <put-attribute name="body" value="/views/cashiers.jsp" />
+    </definition>
+    <definition name="cashier" extends="genericlayout">
+        <put-attribute name="body" value="/views/cashier.jsp" />
+    </definition>
 </tiles-definitions>

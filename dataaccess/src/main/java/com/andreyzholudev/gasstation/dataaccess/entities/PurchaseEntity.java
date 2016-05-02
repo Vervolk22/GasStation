@@ -1,6 +1,10 @@
 package com.andreyzholudev.gasstation.dataaccess.entities;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.sql.Time;
 
 /**
@@ -19,6 +23,8 @@ public class PurchaseEntity extends BaseEntity {
 
     @Basic
     @Column(name = "amount")
+    @Min(value = 1, message = "Amount cannot be less than 1.")
+    @Max(value = 200, message = "Amount cannot be bigger than 200.")
     public int getAmount() {
         return amount;
     }

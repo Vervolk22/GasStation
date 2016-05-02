@@ -14,7 +14,8 @@
                 "bProcessing": true,
                 "bFilter": false,
                 "sPaginationType": "full_numbers",
-                "bJQueryUI": true
+                "bJQueryUI": true,
+                "order": [[ 0, "desc" ]]
             });
         });
     </script>

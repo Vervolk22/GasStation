@@ -7,6 +7,7 @@ import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +17,11 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 
 @Controller
@@ -41,40 +45,38 @@ public class PurchaseController {
         purchaseEntity.setCashier(simpleUser.getCashier());
         purchaseEntity.setClient(new ClientEntity());
         purchaseEntity.setFuel(new FuelEntity());
-        Map<FuelEntity, Integer> map = getDateAndPrice();
-        request.setAttribute("fuelPrices", map);
-
-
-
-        /*purchaseEntity.set
-        lotEntity.setCashier(u);
-        CategoryEntity cat = new CategoryEntity();
-        lotEntity.setCategory(cat);
-        lotEntity.setUserForLot(user);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 7);
-        lotEntity.setStarttime(new Date());
-        lotEntity.setEndtime(calendar.getTime());
-        request.setAttribute("lotEntity", purchaseEntity);*/
-        //request.setAttribute("categories", categoryService.readAllAsMap());
+        //changeEncodings(purchaseEntity);
+        request.setAttribute("fuelPrices", getDateAndPrice());
         request.setAttribute("purchaseEntity", purchaseEntity);
         request.setAttribute("clients", clientDAO.read());
-        request.setAttribute("fuels", fuelDAO.read());
+        List<FuelEntity> list = fuelDAO.read();
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        for(int i = 0; i < list.size(); i++) {
+            map.put(list.get(i).getId(), list.get(i).getName());
+        }
+        request.setAttribute("fuels", map);
         return "addpurchase";
     }
 
-    /*@RequestMapping(value = "/addlot", method = RequestMethod.POST)
+    @RequestMapping(value = "/addpurchase", method = RequestMethod.POST)
     public String addPurchase(HttpServletRequest request, HttpServletResponse response,
-                         @Valid LotEntity lotEntity, BindingResult bindingResult) {
+                         @Valid PurchaseEntity purchaseEntity, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            request.setAttribute("lotEntity", lotEntity);
-            request.setAttribute("categories", categoryService.readAllAsMap());
-            return "addlot";
+            changeEncodings(purchaseEntity);
+            request.setAttribute("purchaseEntity", purchaseEntity);
+            request.setAttribute("fuelPrices", getDateAndPrice());
+            request.setAttribute("clients", clientDAO.read());
+            request.setAttribute("fuels", fuelDAO.read());
+            return "addpurchase";
         } else {
-            lotService.create(lotEntity);
+            changeEncodings(purchaseEntity);
+            purchaseEntity.setDay(dayDAO.readByString(new java.sql.Date(new java.util.Date().getTime())));
+            purchaseEntity.setTime(new Time(new java.util.Date().getTime()));
+            purchaseEntity.setClient(null);
+            purchaseDAO.create(purchaseEntity);
             return "index";
         }
-    }*/
+    }
 
     @RequestMapping(value = "/purchases", method = RequestMethod.GET)
     public void purchases(HttpServletRequest request, HttpServletResponse response) {
@@ -84,6 +86,7 @@ public class PurchaseController {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
         List<PurchaseEntity> list = purchaseDAO.read();
+        int t = getter.getSortingColumnsNumber();
         Collections.sort(list, new PurchaseComparator(getter.getSortingColumnsNumber(),
                 getter.getSortingColumns(), getter.getDirections()));
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
@@ -133,6 +136,15 @@ public class PurchaseController {
         }
 
         return data;
+    }
+
+    private void changeEncodings(PurchaseEntity purchaseEntity) {
+        try {
+            purchaseEntity.getCashier().setName(new String(purchaseEntity.getCashier().getName().getBytes("iso-8859-1"), "UTF-8"));
+            purchaseEntity.getFuel().setName(new String(purchaseEntity.getFuel().getName().getBytes("iso-8859-1"), "UTF-8"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Map<FuelEntity, Integer> getDateAndPrice() {

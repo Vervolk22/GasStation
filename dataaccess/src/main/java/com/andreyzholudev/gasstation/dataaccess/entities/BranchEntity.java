@@ -10,7 +10,7 @@ import java.sql.Date;
 @Table(name = "branch", schema = "gasstationdb", catalog = "")
 public class BranchEntity extends BaseEntity {
     private Date startdate;
-    private int addressId;
+    private AddressEntity address;
 
     @Basic
     @Column(name = "startdate")
@@ -22,14 +22,14 @@ public class BranchEntity extends BaseEntity {
         this.startdate = startdate;
     }
 
-    @Basic
-    @Column(name = "address_id")
-    public int getAddressId() {
-        return addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    public AddressEntity getAddress() {
+        return address;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class BranchEntity extends BaseEntity {
         BranchEntity that = (BranchEntity) o;
 
         if (id != that.id) return false;
-        if (addressId != that.addressId) return false;
+        if (address.getId() != that.address.getId()) return false;
         if (startdate != null ? !startdate.equals(that.startdate) : that.startdate != null) return false;
 
         return true;
@@ -50,7 +50,7 @@ public class BranchEntity extends BaseEntity {
     public int hashCode() {
         int result = id;
         result = 31 * result + (startdate != null ? startdate.hashCode() : 0);
-        result = 31 * result + addressId;
+        result = 31 * result + address.getId();
         return result;
     }
 }

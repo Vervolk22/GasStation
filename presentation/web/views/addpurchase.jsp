@@ -8,11 +8,11 @@
 <h1>New purchase</h1>
 <c:url var="saveUrl" value="/purchase/addpurchase" />
 <c:set var="temp" value=""/>
-<form:form modelAttribute="purchaseEntity" method="POST" action="${saveUrl}">
+<form:form modelAttribute="purchaseEntity" acceptCharset="utf-16" method="POST" action="${saveUrl}">
     <table>
         <tr>
             <td><form:label path="fuel.name">Select fuel:</form:label></td>
-            <td><form:select id="fuelInput" path="fuel.name" items="${fuels}" /></td>
+            <td><form:select id="fuelInput" path="fuel.id" items="${fuels}" /></td>
         </tr>
         <tr>
             <td><form:label path="${temp}">Fuel price:</form:label></td>
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td><form:label path="amount">Enter amount:</form:label></td>
-            <td><form:input path="amount"/></td>
+            <td><form:input id="amountInput" path="amount"/></td>
             <td><form:errors path="amount" cssClass="error"/></td>
         </tr>
         <tr>
@@ -35,6 +35,7 @@
         <tr>
             <td><form:label path="cashier.name">Cashier:</form:label></td>
             <td><form:input readonly="true" path="cashier.name" /></td>
+            <td><form:hidden readonly="true" path="cashier.id" /></td>
         </tr>
     </table>
 

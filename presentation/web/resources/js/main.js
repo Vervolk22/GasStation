@@ -13,11 +13,17 @@ $(document).ready(function () {
         }
     });
     $('#fuelInput').on('change', function () {
-        var num = this.val();
+        var num = this.selectedIndex;
         var priceInput = $('#priceSelect');
-        priceInput.val(num);
+        priceInput[0].selectedIndex = num;
         var payInput = $('#paid');
-        var amountInput = $('#amount');
+        var amountInput = $('#amountInput');
+        payInput.val(priceInput.val() * amountInput.val());
+    });
+    $('#amountInput').on('keyup', function () {
+        var payInput = $('#paid');
+        var priceInput = $('#priceSelect');
+        var amountInput = $('#amountInput');
         payInput.val(priceInput.val() * amountInput.val());
     });
 });
