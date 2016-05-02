@@ -27,6 +27,9 @@
     <bean id="everyDayPriceInfoService" class="com.andreyzholudev.gasstation.dataaccess.dal.EveryDayPriceInfoDAO">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>
+    <bean id="UserAuthorityService" class="com.andreyzholudev.gasstation.dataaccess.dal.UserAuthorityDAO">
+        <property name="sessionFactory" ref="mySessionFactory"/>
+    </bean>
     <bean id="daoimpl" class="com.andreyzholudev.gasstation.dataaccess.dal.DAOImpl">
         <property name="sessionFactory" ref="mySessionFactory"/>
     </bean>

@@ -8,7 +8,7 @@
 <h1>New cashier</h1>
 <c:url var="saveUrl" value="/cashier/addcashier" />
 <c:set var="temp" value=""/>
-<form:form modelAttribute="cashierEntity" acceptCharset="utf-16" method="POST" action="${saveUrl}">
+<form:form modelAttribute="cashierPassEntity" acceptCharset="utf-16" method="POST" action="${saveUrl}">
   <table>
     <tr>
       <td><form:label path="branch.id">Select branch:</form:label></td>
@@ -19,8 +19,8 @@
       <td><form:input path="name"/></td>
     </tr>
     <tr>
-      <td><form:label path="${password}">Enter password:</form:label></td>
-      <td><form:input path="${password}"/></td>
+      <td><form:label path="simpleUser.password">Enter password:</form:label></td>
+      <td><form:input path="simpleUser.password"/></td>
     </tr>
   </table>
 

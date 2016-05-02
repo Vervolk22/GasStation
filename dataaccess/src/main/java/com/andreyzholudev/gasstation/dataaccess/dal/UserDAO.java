@@ -2,6 +2,7 @@ package com.andreyzholudev.gasstation.dataaccess.dal;
 
 import com.andreyzholudev.gasstation.dataaccess.entities.AuthorityEntity;
 import com.andreyzholudev.gasstation.dataaccess.entities.UserEntity;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -30,6 +31,27 @@ public class UserDAO extends DAOImpl<UserEntity> implements UserDetailsService {
         return (BaseEntity)(getCurrentSession().createCriteria(UserEntity.class).
                 add(Restrictions.eq("username", username)).uniqueResult());
     }*/
+
+    public int createByQuery(UserEntity userEntity) {
+        try (Session session = factory.openSession()) {
+            Query query = session.createSQLQuery("insert into user (username, password, enabled, " +
+                    "accountNonExpired, credentialsNonExpired, accountNonLocked) values(:a, :b, :c, :d, :e, :f)");
+            query.setParameter("a", userEntity.getUsername());
+            query.setParameter("b", userEntity.getPassword());
+            query.setParameter("c", true);
+            query.setParameter("d", true);
+            query.setParameter("e", true);
+            query.setParameter("f", true);
+            query.executeUpdate();
+        }
+
+        try (Session session = factory.openSession()) {
+            Query query = session.createSQLQuery("SELECT id FROM user WHERE username = :a");
+            query.setParameter("a", userEntity.getUsername());
+            int t = (Integer)query.uniqueResult();
+            return t;
+        }
+    }
 
     @Transactional
     public UserEntity readByUsername(String username) {

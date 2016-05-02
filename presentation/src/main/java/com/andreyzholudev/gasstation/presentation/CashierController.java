@@ -4,8 +4,6 @@ import com.andreyzholudev.gasstation.dataaccess.dal.*;
 import com.andreyzholudev.gasstation.dataaccess.entities.*;
 import com.andreyzholudev.gasstation.presentation.utilities.DataTableParametersGetter;
 import com.andreyzholudev.gasstation.presentation.utilities.PurchaseComparator;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.*;
 
 /**
@@ -36,25 +33,28 @@ public class CashierController {
     private static DayDAO dayDAO = new DayDAO();
     private static BranchDAO branchDAO = new BranchDAO();
     private static EveryDayPriceInfoDAO everyDayPriceInfoDAO = new EveryDayPriceInfoDAO();
+    private static UserAuthorityDAO userAuthorityDAO = new UserAuthorityDAO();
+    private int cashierNum;
 
     @RequestMapping(value = "/addcashier", method = RequestMethod.GET)
-    public String addPurchase(HttpServletRequest request, HttpServletResponse response) {
-        CashierEntity cashierEntity = new CashierEntity();
+    public String addCashier(HttpServletRequest request, HttpServletResponse response) {
+        CashierPassEntity cashierEntity = new CashierPassEntity();
         cashierEntity.setBranch(new BranchEntity());
+        cashierEntity.setSimpleUser(new SimpleUserEntityWithPassword());
         List<BranchEntity> list = new ArrayList<>(branchDAO.read());
         Map<Integer, String> map = new HashMap<Integer, String>();
         for(int i = 0; i < list.size(); i++) {
             map.put(list.get(i).getId(), list.get(i).getAddress().toString());
         }
-        request.setAttribute("cashierEntity", cashierEntity);
+        request.setAttribute("cashierPassEntity", cashierEntity);
         request.setAttribute("branches", map);
         request.setAttribute("password", "");
         return "addcashier";
     }
 
     @RequestMapping(value = "/addcashier", method = RequestMethod.POST)
-    public String addPurchase(HttpServletRequest request, HttpServletResponse response,
-                              @Valid CashierEntity cashierEntity, BindingResult bindingResult) {
+    public String addCashier(HttpServletRequest request, HttpServletResponse response,
+                              @Valid CashierPassEntity cashierEntity, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<BranchEntity> list = new ArrayList<>(branchDAO.read());
             Map<Integer, String> map = new HashMap<Integer, String>();
@@ -68,6 +68,7 @@ public class CashierController {
         } else {
             AuthorityEntity authorityEntity = new AuthorityEntity();
             authorityEntity.setId(2);
+            authorityEntity.setRole("ROLE_ADMIN");
             UserEntity userEntity = new UserEntity();
             userEntity.setAccountNonExpired(true);
             userEntity.setAccountNonLocked(true);
@@ -76,25 +77,31 @@ public class CashierController {
             set.add(authorityEntity);
             userEntity.setAuthorities(set);
             userEntity.setUsername(cashierEntity.getName());
-            String s = (String)request.getAttribute("password");
-            userEntity.setPassword((String) request.getAttribute("password"));
-            userDAO.create(userEntity);
+            userEntity.setPassword(cashierEntity.getSimpleUser().getPassword());
+            int t = userDAO.createByQuery(userEntity);
             SimpleUserEntity simpleUserEntity = simpleUserDAO.readByUsername(cashierEntity.getName());
             cashierEntity.setStartdate(new java.sql.Date(new java.util.Date().getTime()));
-            cashierEntity.setSimpleUser(simpleUserEntity);
-            cashierDAO.create(cashierEntity);
+            CashierEntity entity = setCashierEntity(cashierEntity, simpleUserEntity);
+            cashierDAO.create(entity);
+            userAuthorityDAO.createByQuery(t, 2);
             return "index";
         }
     }
 
-    @RequestMapping(value = "/cashiers", method = RequestMethod.GET)
-    public void purchases(HttpServletRequest request, HttpServletResponse response) {
-        //UserEntity user = userDAO.read(3);
+    @RequestMapping(value = "/cashier", method = RequestMethod.GET)
+    public String cashier(HttpServletRequest request, HttpServletResponse response) {
+        int num = Integer.parseInt(request.getParameter("num"));
+        request.setAttribute("num", num);
+        cashierNum = num;
+        return "cashier";
+    }
 
+    @RequestMapping(value = "/cashierData", method = RequestMethod.GET)
+    public void cashierData(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         JsonObjectBuilder builder = Json.createObjectBuilder();
         DataTableParametersGetter getter = new DataTableParametersGetter(request);
-        List<PurchaseEntity> list = purchaseDAO.read();
+        List<PurchaseEntity> list = purchaseDAO.readByCashier(cashierNum);
         int t = getter.getSortingColumnsNumber();
         Collections.sort(list, new PurchaseComparator(getter.getSortingColumnsNumber(),
                 getter.getSortingColumns(), getter.getDirections()));
@@ -131,5 +138,23 @@ public class CashierController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/cashiers", method = RequestMethod.GET)
+    public String cashiers(HttpServletRequest request, HttpServletResponse response) {
+        List<CashierEntity> cashiers = cashierDAO.read();
+        request.setAttribute("cashiers", cashiers);
+
+        return "cashiers";
+    }
+
+    private CashierEntity setCashierEntity(CashierPassEntity entity, SimpleUserEntity simpleUserEntity) {
+        CashierEntity cashierEntity = new CashierEntity();
+        cashierEntity.setId(entity.getId());
+        cashierEntity.setSimpleUser(simpleUserEntity);
+        cashierEntity.setBranch(entity.getBranch());
+        cashierEntity.setName(entity.getName());
+        cashierEntity.setStartdate(entity.getStartdate());
+        return cashierEntity;
     }
 }

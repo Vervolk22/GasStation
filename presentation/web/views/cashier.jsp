@@ -9,7 +9,7 @@
     $(document).ready(function () {
       $("#companies").dataTable({
         "bServerSide": true,
-        "sAjaxSource": "/purchase/purchases",
+        "sAjaxSource": "/cashier/cashierData",
         "bProcessing": true,
         "bFilter": false,
         "sPaginationType": "full_numbers",
