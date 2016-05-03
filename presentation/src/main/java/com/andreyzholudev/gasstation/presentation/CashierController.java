@@ -88,6 +88,18 @@ public class CashierController {
         }
     }
 
+    @RequestMapping(value = "/deletecashier", method = RequestMethod.GET)
+    public String deleteCashier(HttpServletRequest request, HttpServletResponse response) {
+        int num = Integer.parseInt(request.getParameter("num"));
+        CashierEntity cashierEntity = cashierDAO.read(num);
+        cashierDAO.delete(num);
+        userAuthorityDAO.deleteByQuery(cashierEntity.getSimpleUser().getId());
+        userDAO.delete(cashierEntity.getSimpleUser().getId());
+        List<CashierEntity> cashiers = cashierDAO.read();
+        request.setAttribute("cashiers", cashiers);
+        return "cashiers";
+    }
+
     @RequestMapping(value = "/cashier", method = RequestMethod.GET)
     public String cashier(HttpServletRequest request, HttpServletResponse response) {
         int num = Integer.parseInt(request.getParameter("num"));

@@ -22,7 +22,7 @@ public class UserAuthorityDAO {
 
     public void deleteByQuery(int id) {
         try (Session session = factory.openSession()) {
-            Query query = session.createSQLQuery("DELETE from user_authority WHERE id = :a");
+            Query query = session.createSQLQuery("DELETE from user_authority WHERE user_id = :a");
             query.setParameter("a", id);
             query.executeUpdate();
         }

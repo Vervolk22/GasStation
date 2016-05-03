@@ -14,6 +14,8 @@
         "bFilter": false,
         "sPaginationType": "full_numbers",
         "bJQueryUI": true,
+        "pageLength": 25,
+        "scrollY": "80%",
         "order": [[ 0, "desc" ]]
       });
     });

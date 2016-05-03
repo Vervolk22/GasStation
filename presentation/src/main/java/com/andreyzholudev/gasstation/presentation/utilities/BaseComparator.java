@@ -41,6 +41,9 @@ public abstract class BaseComparator {
         }
         Comparable value1 = getFieldValue(sortingColumns[comparingColumn], o1);
         Comparable value2 = getFieldValue(sortingColumns[comparingColumn], o2);
+        if (value1 == null && value2 == null) { return 0; }
+        if (value1 == null && value2 != null) { return -1; }
+        if (value1 != null && value2 == null) { return 1; }
         int result = value1.compareTo(value2);
         if (result == 0) {
             return compare(comparingColumn + 1, o1, o2);

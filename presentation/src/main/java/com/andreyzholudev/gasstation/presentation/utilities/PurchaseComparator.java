@@ -3,8 +3,6 @@ package com.andreyzholudev.gasstation.presentation.utilities;
 import com.andreyzholudev.gasstation.dataaccess.entities.BaseEntity;
 import com.andreyzholudev.gasstation.dataaccess.entities.PurchaseEntity;
 
-import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -25,15 +23,17 @@ public class PurchaseComparator extends BaseComparator implements Comparator<Bas
             case 2:
                 return purchase.getPaid();
             case 3:
-                return purchase.getTime();
-            case 4:
-                return purchase.getCashier().toString();
-            case 5:
-                return purchase.getClient().toString();
-            case 6:
-                return purchase.getDay().toString();
-            case 7:
                 return purchase.getFuel().toString();
+            case 4:
+                return purchase.getDay().toString();
+            case 5:
+                return purchase.getTime();
+            case 6:
+                return purchase.getCashier().toString();
+            case 7:
+                if (purchase.getClient() == null) return null;
+                return purchase.getClient().toString();
+
         }
         return null;
     }

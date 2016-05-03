@@ -89,7 +89,15 @@ h5 a:link, h5 a:visited, h5 a:active {
 }
 
 .dataTables_scroll {
-    height: 85%;
+    height: 70%;
+    position: fixed;
+    margin-top: 30px;
+}
+
+
+.ui-corner-br {
+    margin-top: 620px;
+    position: absolute;
 }
 
 .dataTables_scrollBody {
@@ -162,9 +170,11 @@ tr.shown td.details-control {
     cursor: pointer;
 }
 
-#lots_wrapper {
+#lots_wrapper, #companies_wrapper {
     margin: 30px;
     position: absolute;
+    max-height: 500px;
+    display: block;
 }
 
 #categoryDiv {
@@ -191,10 +201,6 @@ tr.shown td.details-control {
     color: red; font-weight: bold;
 }
 
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
-.autocomplete-suggestion { padding: 5px 5px; white-space: nowrap; overflow: hidden; font-size:22px}
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: bold; color: #3399FF; }
 
 /* menu
 ----------------------------------------------------------*/
@@ -284,7 +290,7 @@ input, textarea, select {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 400px;
+    width: 300px;
 }
 
 #categoryDiv > span {
